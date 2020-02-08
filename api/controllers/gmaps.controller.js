@@ -23,7 +23,6 @@ function getplaces(){
                 // console.log(value.geometry.location);
                 createGeofence(value);
                 findCoupons(value);
-
             })
         });
 
@@ -31,21 +30,11 @@ function getplaces(){
         console.log("Error: " + err.message);
     });
 }
-// exports.Get = function (req, res) {
-//     if(req.params !== null){
-//         userModel.find({ 'username': { $eq: req.params.username } }).sort().then(eachOne => {
-//             bcrypt.compare(req.params.password, eachOne[0].password, (err, result) => {
-//                 if (result) {
-//                     res.json(eachOne);
-//                 } else {
-//                     return res.status(400).send({
-//                         message: 'This is an error!'
-//                     });
-//                 }
-//             })
-//         })
-//     }
-// }
+
+function createGeofence(value){
+
+}
+
 exports.Add = async (req, res) => {
     console.log(req.body.username)
     let place = new gmapsModel(
