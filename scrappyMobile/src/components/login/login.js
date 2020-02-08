@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import LoginForm from './loginform';
+import Radar from 'react-native-radar';
 
 export default class Login extends Component {
+    loginRadar() {
+        Radar.setUserId(userId);
+    }
     render() {
         return (
             <View style={styles.container}>
