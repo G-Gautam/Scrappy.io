@@ -20,8 +20,11 @@ function getplaces(){
         resp.on('end', () => {
             let dataArray = JSON.parse(data).results;
             dataArray.forEach((value) => {
-                console.log(value.name);
-                console.log(value.geometry.location);
+                // console.log(value.name);
+                // console.log(value.geometry.location);
+                createGeofence(value);
+                findCoupons(value);
+
             })
         });
 
