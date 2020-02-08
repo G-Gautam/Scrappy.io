@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 
 export default class Home extends Component{
     render(){
