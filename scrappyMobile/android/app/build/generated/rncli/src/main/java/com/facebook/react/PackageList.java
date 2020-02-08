@@ -11,7 +11,11 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+import com.scrappymobile.BuildConfig;
+import com.scrappymobile.R;
 
+// react-native-radar
+import io.radar.react.RNRadarPackage;
 
 public class PackageList {
   private Application application;
@@ -56,7 +60,8 @@ public class PackageList {
 
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
-      new MainReactPackage(mConfig)
+      new MainReactPackage(mConfig),
+      new RNRadarPackage()
     ));
   }
 }
