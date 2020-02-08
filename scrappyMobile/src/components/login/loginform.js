@@ -1,7 +1,45 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native';
+import Radar from 'react-native-radar';
 
 export default class LoginForm extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { userId: '' }
+        Radar.getPermissionsStatus().then((status) => {
+            if (status !== 'GRANTED') {
+                console.log("Asking for permission")
+                Radar.requestPermissions(true);
+            }
+        });
+    }
+    loginRadar() {
+        console.log(this.state.userId)
+        Radar.setUserId(this.state.userId);
+        Radar.setDescription("Testing User");
+        Radar.getPermissionsStatus().then((status) => {
+            if (status === 'GRANTED') {
+                console.log(status);
+                Radar.startTracking();
+                this.updateLocation();
+            }
+        });
+    }
+    updateLocation() {
+        const location = {
+            latitude: 39.2904,
+            longitude: -76.6122,
+            accuracy: 65
+        };
+
+        Radar.updateLocation(location).then((result) => {
+            console.log(result.user);
+        }).catch((err) => {
+            console.log(err)
+        });
+
+        Radar.stopTracking();
+    }
     render() {
         return (
             <View styles={styles.container}>
@@ -11,7 +49,9 @@ export default class LoginForm extends Component {
                     placeholder='Username'
                     placeholderTextColor='rgba(255,255,255,0.7)'
                     returnKeyType='next'
-                    onSubmitEditing = {()=> this.passwordInput.focus()}
+                    onSubmitEditing={() => this.passwordInput.focus()}
+                    value={this.state.userId}
+                    onChangeText={(text) => this.setState({ userId: text })}
                     style={styles.input} />
                 <TextInput
                     placeholder='Password'
@@ -23,10 +63,11 @@ export default class LoginForm extends Component {
 
                 <TouchableOpacity
                     style={styles.buttonContainer}
-
+                    onPress={() => this.loginRadar()}
                 >
                     <Text
-                        style={styles.buttonText}>
+                        style={styles.buttonText}
+                    >
                         LOGIN
                     </Text>
                 </TouchableOpacity>
