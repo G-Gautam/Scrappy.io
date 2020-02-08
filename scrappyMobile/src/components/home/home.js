@@ -15,6 +15,7 @@ export default class Home extends Component{
 const styles = StyleSheet.create({
     homeContainer:{
         flex: 1,
-        padding: 20
+        padding: 20,
+        backgroundColor: 'rgba(0,0,0,0.7)'
     }
 })

@@ -13,7 +13,7 @@ export default class LoginForm extends Component {
             }
         });
     }
-    loginRadar() {
+    loginRadar = () => {
         console.log(this.state.userId)
         Radar.setUserId(this.state.userId);
         Radar.setDescription("Testing User");
@@ -22,9 +22,11 @@ export default class LoginForm extends Component {
                 console.log(status);
                 Radar.startTracking();
                 this.updateLocation();
+                this.props.prop1.navigate('Home');
             }
         });
     }
+
     updateLocation() {
         const location = {
             latitude: 39.2904,

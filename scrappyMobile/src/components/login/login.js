@@ -11,7 +11,7 @@ export default class Login extends Component {
                     <Text style={styles.title}>Insert quirk here</Text>
                 </View>
                 <View style={styles.formContainer}>
-                    <LoginForm></LoginForm>
+                    <LoginForm prop1={this.props.navigation}></LoginForm>
                 </View>
             </View>
         )
