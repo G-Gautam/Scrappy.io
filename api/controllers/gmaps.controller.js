@@ -3,7 +3,6 @@ const https = require('https');
 const PLACEAPIKEY = 'AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ';
 
 exports.GetAll = function (req, res) {
-    console.log("Here");
     return getplaces();
 }
 
