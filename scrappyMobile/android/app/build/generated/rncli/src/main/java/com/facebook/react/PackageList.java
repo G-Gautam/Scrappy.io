@@ -16,6 +16,8 @@ import com.scrappymobile.R;
 
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// @react-native-community/viewpager
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-radar
@@ -72,6 +74,7 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new RNCMaskedViewPackage(),
+      new RNCViewPagerPackage(),
       new RNGestureHandlerPackage(),
       new RNRadarPackage(),
       new ReanimatedPackage(),

@@ -36,6 +36,8 @@ target 'scrappyMobile' do
 
   pod 'react-native-radar', :path => '../node_modules/react-native-radar'
 
+  pod 'react-native-viewpager', :path => '../node_modules/@react-native-community/viewpager'
+
   target 'scrappyMobileTests' do
     inherit! :search_paths
     # Pods for testing
