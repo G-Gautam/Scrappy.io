@@ -28,7 +28,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const gmaps = require('./routes/gmaps.route.js');
 const bodyParser = require('body-parser');
-
+const path = require('path')
+const {
+    spawn
+} = require('child_process')
 const app = express();
 app.use(express.json()); // Make sure it comes back as json
 
@@ -44,7 +47,31 @@ app.use(express.json()); // Make sure it comes back as json
 const PLACEAPIKEY = 'AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ';
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use('/places', gmaps);
 
-app.listen(8081, () => { console.log('Server is running...') });
+app.listen(8081, () => {
+    console.log('Server is running...')
+});
+
+function runScript() {
+    return spawn('python', [
+        "-u",
+        path.join(__dirname, '/controllers/scrapper.py'),
+        "--foo", "some value for foo",
+    ]);
+}
+const subprocess = runScript()
+// print output of script
+subprocess.stdout.on('data', (data) => {
+    console.log(`data:${data}`);
+    console.log('dfg', data)
+});
+subprocess.stderr.on('data', (data) => {
+    console.log(`error:${data}`);
+});
+subprocess.stderr.on('close', () => {
+    console.log("Closed");
+});

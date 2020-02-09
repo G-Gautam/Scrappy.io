@@ -13,6 +13,6 @@ module.exports = router;
 router.get('/all', gmapsController.GetAll);
 router.post('', gmapsController.Add);
 // router.post('/create', product_controller.product_create);
-// router.get('/:id', product_controller.product_details);
+router.get('/:name', gmapsController.getCoupons);
 // router.put('/:id', product_controller.product_update);
 // router.delete('/:id', product_controller.product_delete);
