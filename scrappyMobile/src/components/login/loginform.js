@@ -15,13 +15,16 @@ export default class LoginForm extends Component {
     }
     loginRadar = () => {
         console.log(this.state.userId)
+        //Google maps get places
+        //Set geofences
+        
         Radar.setUserId(this.state.userId);
         Radar.setDescription("Testing User");
         Radar.getPermissionsStatus().then((status) => {
             if (status === 'GRANTED') {
                 console.log(status);
                 Radar.startTracking();
-                this.updateLocation();
+                //this.updateLocation();
                 this.props.prop1.navigate('Home');
             }
         });

@@ -21,8 +21,7 @@ function getplaces() {
         resp.on('end', () => {
             let dataArray = JSON.parse(data).results;
             dataArray.forEach((value) => {
-                // console.log(value.name);
-                // console.log(value.geometry.location);
+
                 createGeofence(value);
                 //findCoupons(value);
             })
@@ -66,46 +65,4 @@ function createGeofence(value) {
     req.write(data);
     req.end();
 
-    //Testing
-    getAllFences(value);
-}
-
-function getAllFences(value) {
-    const options = {
-        hostname: 'api.radar.io',
-        path: '/v1/geofences/' + value.name + '/' + value.place_id,
-        method: 'GET',
-        headers: {
-            'Authorization': RADARAPIKEY
-        }
-    }
-    https.request(options, resp => {
-        let data = '';
-
-        // A chunk of data has been recieved.
-        resp.on('data', (chunk) => {
-            data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on('end', () => {
-            console.log(JSON.parse(data));
-        });
-
-    }).on("error", (err) => {
-        console.log("Error: " + err.message);
-    });
-}
-exports.Add = async (req, res) => {
-    console.log(req.body.username)
-    let place = new gmapsModel(
-        {
-            username: req.body.username,
-        })
-    try {
-        await place.save();
-        res.send(place);
-    } catch (err) {
-        res.status(500).send(err);
-    }
 }
