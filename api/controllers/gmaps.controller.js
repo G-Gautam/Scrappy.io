@@ -1,13 +1,13 @@
 const gmapsModel = require("../models/gmaps");
 const PLACEAPIKEY = "AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ";
 const path = require("path");
-const { spawn } = require("child_process");
-const gmapsModel = require("../models/gmaps");
+const {
+  spawn
+} = require("child_process");
 const https = require("https");
-const PLACEAPIKEY = "AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ";
 const RADARAPIKEY = "prj_test_sk_94bb96c8abf1312bfbd175799409a99724609b0f";
 
-exports.GetAll = function(req, res) {
+exports.GetAll = function (req, res) {
   return getplaces();
 };
 
@@ -15,7 +15,7 @@ function getplaces() {
   https
     .get(
       "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.4220039,-75.6839884&radius=1500&keyword=food+coffee&key=" +
-        PLACEAPIKEY,
+      PLACEAPIKEY,
       resp => {
         let data = "";
 
@@ -39,30 +39,32 @@ function getplaces() {
     });
 }
 
-exports.getCoupons = function(req, res) {
+exports.getCoupons = function (req, res) {
   const subprocess = findCoupons(req.params.name);
+  subprocess.stdout.on("data", data => {
+    console.log(`data:${data}`);
+    console.log("Data", data.toString());
+    var storesNearby = data.toString();
+    return storesNearby
+  });
+  subprocess.stderr.on("data", data => {
+    console.log(`error:${data}`);
+  });
+  subprocess.stderr.on("close", () => {
+    console.log("Closed");
+  });
 };
 
 function findCoupons(value) {
   // console.log(value)
   return spawn("python", [
     "-u",
-    path.join(__dirname, "/controllers/scrapper.py"),
+    path.join(__dirname, "/scrapper.py"),
     "--foo",
     "some value for foo"
   ]);
 }
 // print output of script
-subprocess.stdout.on("data", data => {
-  console.log(`data:${data}`);
-  console.log("dfg", data);
-});
-subprocess.stderr.on("data", data => {
-  console.log(`error:${data}`);
-});
-subprocess.stderr.on("close", () => {
-  console.log("Closed");
-});
 // exports.Get = function (req, res) {
 //     if(req.params !== null){
 //         userModel.find({ 'username': { $eq: req.params.username } }).sort().then(eachOne => {
@@ -90,6 +92,7 @@ exports.Add = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
 function createGeofence(value) {
   value.name = value.name.replace(/\s/g, "");
 

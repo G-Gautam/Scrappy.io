@@ -54,24 +54,3 @@ app.use("/places", gmaps);
 app.listen(8080, () => {
   console.log("Server is running...");
 });
-
-function runScript() {
-  return spawn("python", [
-    "-u",
-    path.join(__dirname, "/controllers/scrapper.py"),
-    "--foo",
-    "some value for foo"
-  ]);
-}
-const subprocess = runScript();
-// print output of script
-subprocess.stdout.on("data", data => {
-  console.log(`data:${data}`);
-  console.log("dfg", data);
-});
-subprocess.stderr.on("data", data => {
-  console.log(`error:${data}`);
-});
-subprocess.stderr.on("close", () => {
-  console.log("Closed");
-});

@@ -43,6 +43,7 @@ def get_details():
                     break
             else:
                 sys.stdout.flush()
+        print(results)
     sys.stdout.flush()
     
 
