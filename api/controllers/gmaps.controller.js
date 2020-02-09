@@ -39,7 +39,7 @@ function createGeofence(value) {
     description: value.name,
     type: 'circle',
     coordinates: [value.geometry.location.lng.toString(), value.geometry.location.lat.toString()],
-    radius: 500
+    radius: 600
   })
   let options = {
     hostname: 'api.radar.io',
@@ -67,22 +67,23 @@ function createGeofence(value) {
 
 exports.getCoupons = function (req, res) {
   const subprocess = findCoupons(req.params.name);
+  var result = {};
   subprocess.stdout.on("data", data => {
-    console.log(`data:${data}`);
-    console.log("Data", data.toString());
     var storesNearby = data.toString();
-    return storesNearby
+    result = storesNearby;
   });
   subprocess.stderr.on("data", data => {
     console.log(`error:${data}`);
   });
   subprocess.stderr.on("close", () => {
     console.log("Closed");
+    console.log(result);
+    res.send({'data': result});
   });
 };
 
 function findCoupons(value) {
-  // console.log(value)
+  console.log(value)
   return spawn("python", [
     "-u",
     path.join(__dirname, "/scrapper.py"),

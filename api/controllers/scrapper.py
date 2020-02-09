@@ -29,7 +29,7 @@ def get_details():
             crux = item.find(class_='crux')
             crux_code=soup.find_all("div", {"class": "code"})
             if crux_code is not None:
-                description = soup.find(class_='title')
+                description = str(soup.find(class_='title'))
                 
                 percent = soup.find(class_='percent').contents[0]
                 if crux is not None:
@@ -43,7 +43,8 @@ def get_details():
                     break
             else:
                 sys.stdout.flush()
-        print(results)
+        resultDTO = {"data": results}
+        print(resultDTO)
     sys.stdout.flush()
     
 
