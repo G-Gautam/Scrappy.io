@@ -5,10 +5,7 @@ const RADARAPIKEY = 'prj_test_sk_94bb96c8abf1312bfbd175799409a99724609b0f';
 
 
 exports.GetAll = function (req, res) {
-    return getplaces();
-}
-
-function getplaces() {
+    var result = []
     https.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.4220039,-75.6839884&radius=1500&keyword=food+coffee&key=' + PLACEAPIKEY, (resp) => {
         let data = '';
 
@@ -16,15 +13,14 @@ function getplaces() {
         resp.on('data', (chunk) => {
             data += chunk;
         });
-
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
             let dataArray = JSON.parse(data).results;
             dataArray.forEach((value) => {
-
                 createGeofence(value);
                 //findCoupons(value);
             })
+            res.send(dataArray);
         });
 
     }).on("error", (err) => {
@@ -34,7 +30,7 @@ function getplaces() {
 
 function createGeofence(value) {
     value.name = value.name.replace(/\s/g, '');
-
+    console.log(value.name);
     let data = JSON.stringify({
         description: value.name,
         type: 'circle',
@@ -64,5 +60,4 @@ function createGeofence(value) {
     })
     req.write(data);
     req.end();
-
 }

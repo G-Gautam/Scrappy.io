@@ -17,18 +17,30 @@ export default class LoginForm extends Component {
         console.log(this.state.userId)
         //Google maps get places
         //Set geofences
-        
+        this.getPlacesAndProcess();
         Radar.setUserId(this.state.userId);
         Radar.setDescription("Testing User");
         Radar.getPermissionsStatus().then((status) => {
             if (status === 'GRANTED') {
                 console.log(status);
                 Radar.startTracking();
-                //this.updateLocation();
+                this.updateLocation();
                 this.props.prop1.navigate('Home');
             }
         });
     }
+
+    getPlacesAndProcess = () => {
+        console.log('here');
+        return fetch('http://10.0.2.2:8080/places/all')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+            }).catch((error) => {
+                console.log(error);
+            })
+    }
+
 
     updateLocation() {
         const location = {
