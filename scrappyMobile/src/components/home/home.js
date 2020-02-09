@@ -12,6 +12,7 @@ export default class Home extends Component {
         this.getPlacesAndProcess();
         this.state = {
             dataArray: [],
+            couponArray: [],
             domains: [
                 { name: 'McDonald\'s', domain: 'mcdonalds.com' },
                 { name: 'SecondCupCoffeeCo.', domain: 'secondcup.com' },
@@ -35,7 +36,7 @@ export default class Home extends Component {
     }
     getPlacesAndProcess = () => {
         console.log('here');
-        return fetch('http://39c118ea.ngrok.io/places/all')
+        return fetch('http://10.0.2.2:8080/places/all')
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status === 'OKAY') {
@@ -64,8 +65,8 @@ export default class Home extends Component {
                     Radar.on('error', (err) => {
                         // do something with err
                     });
-                    this.updateLocation();
                     Radar.stopTracking();
+                    this.updateLocation();
                 }
             }).catch((error) => {
                 console.log(error);
@@ -73,7 +74,29 @@ export default class Home extends Component {
     }
 
     getsCoupons(){
-        return fetch('http://39c118ea.ngrok.io/places/')
+        return fetch('http://10.0.2.2:8080/places/'+this.state['dataArray'][0].description)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson)
+            var regex = /(<([^>]+)>)/ig
+            let target = responseJson.data.replace(regex, "");
+            target = target.replace(/'/g, '\"')
+            // let innerJson = target.data.replace(regex, '\"')
+            // innerJson = responseJson.data.replace(/'/g, '"')
+            console.log('JSON', JSON.parse(target).data);
+            var result = []
+            result.push(JSON.parse(target).data[0])
+            for(let i = 1; i < JSON.parse(target).data.length; i++){
+                if(JSON.parse(target).data[i].code_text !== JSON.parse(target).data[i-1].code_text){
+                    result.push(JSON.parse(target).data[i]);
+                }
+            }
+            
+            this.setState({couponArray: result});
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     render() {
@@ -82,11 +105,10 @@ export default class Home extends Component {
                 <Text style={styles.title}>Places Near You</Text>
                 <View style={styles.carouselContainer}>
                     <Carousel width={200} hideIndicators={false} indicatorAtBottom={false} animate={false} indicatorOffset={150} inactiveIndicatorColor="white" indicatorColor="grey">
-                        {this.state['dataArray'].map(block => <RestaurantTile title={block.description} image={'https://logo.clearbit.com/' + block.externalId} />)}
+                        {this.state['dataArray'].map(block => <RestaurantTile key={block._id} title={block.description} image={'https://logo.clearbit.com/' + block.externalId} />)}
                     </Carousel>
                 </View>
-                {/* <Button onPress={() => this.updateLocation()} title='Button'></Button> */}
-                <CouponTile title="BLAH" code="BLAH"></CouponTile>
+                {this.state['couponArray'].map(block => <CouponTile key={block.code_text} title={block.description} code={block.code_text} />)}
             </View>
         )
     }
@@ -95,8 +117,8 @@ export default class Home extends Component {
         Radar.startTracking();
 
         const location = {
-            latitude: 39.2904,
-            longitude: -76.6122,
+            latitude: 45.4224162,
+            longitude: -75.6867766,
             accuracy: 65
         };
 

@@ -7,7 +7,7 @@ export default class Login extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.logoContainer}>
-                    <Image style={styles.logo} source={require('../../images/hand-arm-drawing-hands-png-clip-art.png')} />
+                    <Image style={styles.logo} source={require('../../images/Logo.png')} />
                     <Text style={styles.title}>Insert quirk here</Text>
                 </View>
                 <View style={styles.formContainer}>
