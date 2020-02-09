@@ -12,7 +12,7 @@ def make_coupon(description,percent,code):
 
 def get_details():
     headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'}
-    page = requests.get('https://www.retailmenot.ca/coupons/swisschalet.com',headers=headers)
+    page = requests.get('https://www.retailmenot.ca/coupons/subway.com',headers=headers)
 
     c= page.content
     # BeautifulSoup Object
@@ -26,7 +26,7 @@ def get_details():
     for item in coupon_list_offers:
         if soup.find("div", {"class": "crux"}) is not None:
             # print("Tag FSound")
-            crux = item.find(class_='crux')
+            crux = soup.find(class_='crux')
             crux_code=soup.find_all("div", {"class": "code"})
             if crux_code is not None:
                 description = str(soup.find(class_='title'))
