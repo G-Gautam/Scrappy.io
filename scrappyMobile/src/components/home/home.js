@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { withOrientation } from 'react-navigation';
 import RestaurantTile from './restaurantTile';
+import CouponTile from './couponTile';
 var Carousel = require('react-native-carousel');
 import Radar from 'react-native-radar';
 
@@ -52,7 +53,8 @@ export default class Home extends Component {
                                 }
                             }
                         });
-                        this.setState({ dataArray: result.user.geofences })
+                        this.setState({ dataArray: result.user.geofences });
+                        this.getsCoupons();
                     });
 
                     Radar.on('location', (result) => {
@@ -70,6 +72,10 @@ export default class Home extends Component {
             })
     }
 
+    getsCoupons(){
+        return fetch('http://39c118ea.ngrok.io/places/')
+    }
+
     render() {
         return (
             <View style={styles.homeContainer}>
@@ -80,6 +86,7 @@ export default class Home extends Component {
                     </Carousel>
                 </View>
                 {/* <Button onPress={() => this.updateLocation()} title='Button'></Button> */}
+                <CouponTile title="BLAH" code="BLAH"></CouponTile>
             </View>
         )
     }
