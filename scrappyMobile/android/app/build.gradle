@@ -179,8 +179,11 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-radar')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'io.radar:sdk:2.1.+'
+    implementation project(':@react-native-community_viewpager')
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

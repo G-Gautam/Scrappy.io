@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\ggupt\\OneDrive\\Desktop\\Important\\Projects\\Scrappy.io\\scrappyMobile\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v16\\values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ggupt\\.gradle\\caches\\transforms-2\\files-2.1\\45387b843d3b54c7f95862ecb1c09e27\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\ggupt\\.gradle\\caches\\transforms-2\\files-2.1\\0aa741bdbcf45874eb04819f5724603a\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ggupt\\.gradle\\caches\\transforms-2\\files-2.1\\056823ae867a69196b23a9c8aeebd6ca\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\ggupt\\.gradle\\caches\\transforms-2\\files-2.1\\34294f1a0ece03692e0b974da63c5816\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

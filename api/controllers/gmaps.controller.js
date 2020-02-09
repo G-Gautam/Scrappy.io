@@ -1,12 +1,13 @@
 const gmapsModel = require("../models/gmaps");
+const PLACEAPIKEY = "AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ";
+const path = require("path");
+const { spawn } = require("child_process");
+const gmapsModel = require("../models/gmaps");
 const https = require("https");
 const PLACEAPIKEY = "AIzaSyCsLXMvE-V_AnumPa6sEHFpW5Q8JhNrDDQ";
-var util = require("util");
-const path = require("path");
-const {
-  spawn
-} = require("child_process");
-exports.GetAll = function (req, res) {
+const RADARAPIKEY = "prj_test_sk_94bb96c8abf1312bfbd175799409a99724609b0f";
+
+exports.GetAll = function(req, res) {
   return getplaces();
 };
 
@@ -14,7 +15,7 @@ function getplaces() {
   https
     .get(
       "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.4220039,-75.6839884&radius=1500&keyword=food+coffee&key=" +
-      PLACEAPIKEY,
+        PLACEAPIKEY,
       resp => {
         let data = "";
 
@@ -27,9 +28,7 @@ function getplaces() {
         resp.on("end", () => {
           let dataArray = JSON.parse(data).results;
           dataArray.forEach(value => {
-            // console.log(value.name);
-            // console.log(value.geometry.location);
-            // createGeofence(value);
+            createGeofence(value);
             findCoupons(value);
           });
         });
@@ -40,29 +39,28 @@ function getplaces() {
     });
 }
 
-
-exports.getCoupons = function (req, res) {
-  const subprocess = findCoupons(req.params.name)
-}
-
+exports.getCoupons = function(req, res) {
+  const subprocess = findCoupons(req.params.name);
+};
 
 function findCoupons(value) {
   // console.log(value)
-  return spawn('python', [
+  return spawn("python", [
     "-u",
-    path.join(__dirname, '/controllers/scrapper.py'),
-    "--foo", "some value for foo",
+    path.join(__dirname, "/controllers/scrapper.py"),
+    "--foo",
+    "some value for foo"
   ]);
 }
 // print output of script
-subprocess.stdout.on('data', (data) => {
+subprocess.stdout.on("data", data => {
   console.log(`data:${data}`);
-  console.log('dfg', data)
+  console.log("dfg", data);
 });
-subprocess.stderr.on('data', (data) => {
+subprocess.stderr.on("data", data => {
   console.log(`error:${data}`);
 });
-subprocess.stderr.on('close', () => {
+subprocess.stderr.on("close", () => {
   console.log("Closed");
 });
 // exports.Get = function (req, res) {
@@ -92,3 +90,38 @@ exports.Add = async (req, res) => {
     res.status(500).send(err);
   }
 };
+function createGeofence(value) {
+  value.name = value.name.replace(/\s/g, "");
+
+  let data = JSON.stringify({
+    description: value.name,
+    type: "circle",
+    coordinates: [
+      value.geometry.location.lng.toString(),
+      value.geometry.location.lat.toString()
+    ],
+    radius: 100
+  });
+  let options = {
+    hostname: "api.radar.io",
+    path: "/v1/geofences/" + value.name + "/" + value.place_id,
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+      Authorization: RADARAPIKEY
+    }
+  };
+  const req = https.request(options, res => {
+    console.log("statusCode:" + res.statusCode);
+
+    res.on("data", d => {
+      console.log("Successful");
+    });
+  });
+  req.on("error", err => {
+    console.log(err);
+  });
+  req.write(data);
+  req.end();
+}

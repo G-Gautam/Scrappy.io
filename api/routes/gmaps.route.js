@@ -11,7 +11,7 @@ module.exports = router;
 // router.get('/allusers', user_controller.GetAll);
 // router.get('/:password/:username', user_controller.Get);
 router.get('/all', gmapsController.GetAll);
-router.post('', gmapsController.Add);
+// router.post('', gmapsController.Add);
 // router.post('/create', product_controller.product_create);
 router.get('/:name', gmapsController.getCoupons);
 // router.put('/:id', product_controller.product_update);
