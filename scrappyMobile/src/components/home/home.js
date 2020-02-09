@@ -5,6 +5,7 @@ import RestaurantTile from './restaurantTile';
 import CouponTile from './couponTile';
 var Carousel = require('react-native-carousel');
 import Radar from 'react-native-radar';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class Home extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class Home extends Component {
     }
     getPlacesAndProcess = () => {
         console.log('here');
-        return fetch('http://10.0.2.2:8080/places/all')
+        return fetch('https://9def8f3b.ngrok.io/places/all')
             .then((response) => response.json())
             .then((responseJson) => {
                 if (responseJson.status === 'OKAY') {
@@ -73,30 +74,30 @@ export default class Home extends Component {
             })
     }
 
-    getsCoupons(){
-        return fetch('http://10.0.2.2:8080/places/'+this.state['dataArray'][0].description)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson)
-            var regex = /(<([^>]+)>)/ig
-            let target = responseJson.data.replace(regex, "");
-            target = target.replace(/'/g, '\"')
-            // let innerJson = target.data.replace(regex, '\"')
-            // innerJson = responseJson.data.replace(/'/g, '"')
-            console.log('JSON', JSON.parse(target).data);
-            var result = []
-            result.push(JSON.parse(target).data[0])
-            for(let i = 1; i < JSON.parse(target).data.length; i++){
-                if(JSON.parse(target).data[i].code_text !== JSON.parse(target).data[i-1].code_text){
-                    result.push(JSON.parse(target).data[i]);
+    getsCoupons() {
+        return fetch('https://9def8f3b.ngrok.io/places/' + this.state['dataArray'][0].description)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                var regex = /(<([^>]+)>)/ig
+                let target = responseJson.data.replace(regex, "");
+                target = target.replace(/'/g, '\"')
+                // let innerJson = target.data.replace(regex, '\"')
+                // innerJson = responseJson.data.replace(/'/g, '"')
+                console.log('JSON', JSON.parse(target).data);
+                var result = []
+                result.push(JSON.parse(target).data[0])
+                for (let i = 1; i < JSON.parse(target).data.length; i++) {
+                    if (JSON.parse(target).data[i].code_text !== JSON.parse(target).data[i - 1].code_text) {
+                        result.push(JSON.parse(target).data[i]);
+                    }
                 }
-            }
-            
-            this.setState({couponArray: result});
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+
+                this.setState({ couponArray: result });
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     render() {
@@ -104,11 +105,13 @@ export default class Home extends Component {
             <View style={styles.homeContainer}>
                 <Text style={styles.title}>Places Near You</Text>
                 <View style={styles.carouselContainer}>
-                    <Carousel width={200} hideIndicators={false} indicatorAtBottom={false} animate={false} indicatorOffset={150} inactiveIndicatorColor="white" indicatorColor="grey">
+                    <Carousel width={150} hideIndicators={false} indicatorAtBottom={false} animate={false} indicatorOffset={100} inactiveIndicatorColor="white" indicatorColor="grey">
                         {this.state['dataArray'].map(block => <RestaurantTile key={block._id} title={block.description} image={'https://logo.clearbit.com/' + block.externalId} />)}
                     </Carousel>
                 </View>
-                {this.state['couponArray'].map(block => <CouponTile key={block.code_text} title={block.description} code={block.code_text} />)}
+                <ScrollView style={styles.scrollContainer}>
+                    {this.state['couponArray'].map(block => <CouponTile key={block.code_text} title={block.description} code={block.code_text} />)}
+                </ScrollView>
             </View>
         )
     }
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     homeContainer: {
         flex: 1,
         padding: 20,
-        backgroundColor: 'rgba(0,0,0,1)',
+        backgroundColor: '#3498db',
         alignItems: 'center',
     },
     carouselContainer: {
@@ -151,8 +154,16 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        color: '#3498db',
-        marginBottom: 10
-
+        color: '#FFF',
+        marginBottom: 10,
+        fontWeight: '700',
+        fontFamily: 'Roboto',
+        letterSpacing: 2
+    },
+    scrollContainer:{
+        backgroundColor: '#fff',
+        width: 300,
+        borderRadius: 20,
+        padding: 10
     }
 })

@@ -6,8 +6,8 @@ export default class RestaurantTile extends Component {
     render(){
         return(
             <View style={styles.container}>
-                <Image style={styles.image} source={{uri: this.props.image}}></Image>
-                <Text style={styles.title}>{this.props.title}</Text>
+                <Image style={styles.image} source={require('./../../images/Subway.png')}></Image>
+                {/* <Text style={styles.title}>{this.props.title}</Text> */}
             </View>
         )
     }
@@ -16,9 +16,11 @@ export default class RestaurantTile extends Component {
 const styles = StyleSheet.create({
     container:{
         backgroundColor: '#FFF',
-        flex: 0.8,
+        flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 100,
+        marginBottom: 10
     },
     title:{
         backgroundColor: '#000',

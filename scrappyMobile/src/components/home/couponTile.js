@@ -19,32 +19,34 @@ export default class CouponTile extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FFF',
-        flex: 0.2,
+        backgroundColor: 'rgba(241,147,44,0.9)',
+        flex: 0.3,
         flexDirection: 'row',
-        backgroundColor: '#fff',
         width: '100%',
         borderRadius: 10,
         padding: 10,
     },
     title: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#FFF',
         color: '#fff',
         textAlign: 'center',
         fontSize: 20,
-        width: '70%',
+        width: '60%',
+        marginLeft: '5%',
         flex: 1,
         padding: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 10
     },
     code: {
-        backgroundColor: '#3498db',
-        color: '#fff',
+        backgroundColor: '#FFF',
+        color: '#000',
         textAlign: 'center',
         fontSize: 20,
         width: '30%',
         flex: 0.5,
         padding: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 10
     }
 })
