@@ -8,7 +8,7 @@ export default class Login extends Component {
             <View style={styles.container}>
                 <View style={styles.logoContainer}>
                     <Image style={styles.logo} source={require('../../images/Logo.png')} />
-                    <Text style={styles.title}>Insert quirk here</Text>
+                    <Text style={styles.title}>SCRAPPY.IO</Text>
                 </View>
                 <View style={styles.formContainer}>
                     <LoginForm prop1={this.props.navigation}></LoginForm>
@@ -38,9 +38,13 @@ const styles = StyleSheet.create({
     title: {
         color: '#FFF',
         marginTop: 10,
-        width: 100,
+        width: 400,
         textAlign: "center",
-        opacity: 0.8
+        opacity: 0.8,
+        fontFamily: 'Roboto',
+        fontWeight: '700',
+        fontSize: 40,
+        letterSpacing: 3
     },
 
 })
