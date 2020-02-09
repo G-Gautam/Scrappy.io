@@ -6,7 +6,7 @@ const RADARAPIKEY = 'prj_test_sk_94bb96c8abf1312bfbd175799409a99724609b0f';
 
 exports.GetAll = function (req, res) {
     var result = []
-    https.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.4220039,-75.6839884&radius=1500&keyword=food+coffee&key=' + PLACEAPIKEY, (resp) => {
+    https.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.648152,-79.380694&radius=1500&keyword=fast+food&key=' + PLACEAPIKEY, (resp) => {
         let data = '';
 
         // A chunk of data has been recieved.

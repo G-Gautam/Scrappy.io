@@ -15,9 +15,6 @@ export default class LoginForm extends Component {
     }
     loginRadar = () => {
         console.log(this.state.userId)
-        //Google maps get places
-        //Set geofences
-        this.getPlacesAndProcess();
         Radar.setUserId(this.state.userId);
         Radar.setDescription("Testing User");
         Radar.getPermissionsStatus().then((status) => {
@@ -29,18 +26,6 @@ export default class LoginForm extends Component {
             }
         });
     }
-
-    getPlacesAndProcess = () => {
-        console.log('here');
-        return fetch('http://10.0.2.2:8080/places/all')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson);
-            }).catch((error) => {
-                console.log(error);
-            })
-    }
-
 
     updateLocation() {
         const location = {

@@ -6,7 +6,7 @@ export default class RestaurantTile extends Component {
     render(){
         return(
             <View style={styles.container}>
-                <Image style={styles.image} source={this.props.image}></Image>
+                <Image style={styles.image} source={{uri: this.props.image}}></Image>
                 <Text style={styles.title}>{this.props.title}</Text>
             </View>
         )
