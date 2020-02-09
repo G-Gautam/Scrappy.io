@@ -19,9 +19,6 @@ export default class LoginForm extends Component {
         Radar.setDescription("Testing User");
         Radar.getPermissionsStatus().then((status) => {
             if (status === 'GRANTED') {
-                console.log(status);
-                Radar.startTracking();
-                this.updateLocation();
                 this.props.prop1.navigate('Home');
             }
         });

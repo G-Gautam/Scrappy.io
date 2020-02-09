@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Button } from 'react-native';
 import { withOrientation } from 'react-navigation';
 import RestaurantTile from './restaurantTile';
 var Carousel = require('react-native-carousel');
-var names = [{ 'name': 'Jake', 'image': require('../../images/hand-arm-drawing-hands-png-clip-art.png') }, { 'name': 'Bob', 'image': require('../../images/hand-arm-drawing-hands-png-clip-art.png') }, { 'name': 'Lol', 'image': require('../../images/hand-arm-drawing-hands-png-clip-art.png') }, { 'name': 'Lols', 'image': require('../../images/hand-arm-drawing-hands-png-clip-art.png') }];
+import Radar from 'react-native-radar';
 
 export default class Home extends Component {
     constructor(props) {
@@ -28,27 +28,43 @@ export default class Home extends Component {
                 { name: 'Smoke\'sPoutinerie', domain: 'smokespoutinerie.com' },
                 { name: 'BigPita', domain: 'bigpitara.com' },
                 { name: 'BurgerKing', domain: 'bk.com' },
+                { name: 'Subway', domain: 'subway.com' },
             ]
         }
     }
     getPlacesAndProcess = () => {
         console.log('here');
-        return fetch('http://10.0.2.2:8080/places/all')
+        return fetch('http://39c118ea.ngrok.io/places/all')
             .then((response) => response.json())
             .then((responseJson) => {
-                responseJson.forEach(element => {
-                    for (let i = 0; i < this.state['domains'].length; i++) {
-                        var value = this.state['domains'][i]
-                        if (element.name === value.name || element.name.includes(value.name)) {
-                            element.icon = value.domain;
-                            break;
-                        }
-                        else {
-                            element.icon = 'forkly.com'
-                        }
-                    }
-                });
-                this.setState({ dataArray: responseJson })
+                if (responseJson.status === 'OKAY') {
+                    Radar.startTracking();
+                    Radar.on('events', (result) => {
+                        result.user.geofences.forEach(element => {
+                            for (let i = 0; i < this.state['domains'].length; i++) {
+                                var value = this.state['domains'][i]
+                                if (element.description === value.name || element.description.includes(value.name)) {
+                                    element.externalId = value.domain;
+                                    break;
+                                }
+                                else {
+                                    element.externalId = 'forkly.com'
+                                }
+                            }
+                        });
+                        this.setState({ dataArray: result.user.geofences })
+                    });
+
+                    Radar.on('location', (result) => {
+                        // do something with result.location, result.user
+                    });
+
+                    Radar.on('error', (err) => {
+                        // do something with err
+                    });
+                    this.updateLocation();
+                    Radar.stopTracking();
+                }
             }).catch((error) => {
                 console.log(error);
             })
@@ -60,11 +76,29 @@ export default class Home extends Component {
                 <Text style={styles.title}>Places Near You</Text>
                 <View style={styles.carouselContainer}>
                     <Carousel width={200} hideIndicators={false} indicatorAtBottom={false} animate={false} indicatorOffset={150} inactiveIndicatorColor="white" indicatorColor="grey">
-                        {this.state['dataArray'].map(block => <RestaurantTile title={block.name} image={'https://logo.clearbit.com/' + block.icon + '?size=50'} />)}
+                        {this.state['dataArray'].map(block => <RestaurantTile title={block.description} image={'https://logo.clearbit.com/' + block.externalId} />)}
                     </Carousel>
                 </View>
+                {/* <Button onPress={() => this.updateLocation()} title='Button'></Button> */}
             </View>
         )
+    }
+
+    updateLocation = () => {
+        Radar.startTracking();
+
+        const location = {
+            latitude: 39.2904,
+            longitude: -76.6122,
+            accuracy: 65
+        };
+
+        Radar.updateLocation(location).then((result) => {
+            console.log(result.user);
+            Radar.stopTracking();
+        }).catch((err) => {
+            console.log(err)
+        });
     }
 }
 

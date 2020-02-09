@@ -5,8 +5,8 @@ const RADARAPIKEY = 'prj_test_sk_94bb96c8abf1312bfbd175799409a99724609b0f';
 
 
 exports.GetAll = function (req, res) {
-    var result = []
-    https.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.648152,-79.380694&radius=1500&keyword=fast+food&key=' + PLACEAPIKEY, (resp) => {
+    console.log("here")
+    https.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=45.4224162,-75.6867766&radius=1500&keyword=fast+food&key=' + PLACEAPIKEY, (resp) => {
         let data = '';
 
         // A chunk of data has been recieved.
@@ -20,7 +20,7 @@ exports.GetAll = function (req, res) {
                 createGeofence(value);
                 //findCoupons(value);
             })
-            res.send(dataArray);
+            res.send({"status":"OKAY"});
         });
 
     }).on("error", (err) => {
@@ -35,7 +35,7 @@ function createGeofence(value) {
         description: value.name,
         type: 'circle',
         coordinates: [value.geometry.location.lng.toString(), value.geometry.location.lat.toString()],
-        radius: 100
+        radius: 500
     })
     let options = {
         hostname: 'api.radar.io',
